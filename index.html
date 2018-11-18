@@ -11,6 +11,7 @@
     <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
     crossorigin="anonymous"></script>
    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
 
      
@@ -24,20 +25,21 @@
         </nav>
         <div style = "margin-top: 50px;" id= "header" class = "container-fluid text-center">
             <h1 style="padding-top: 50px; padding-bottom: 50px;">Welcome to the pirate shop!</h1>
+            <span class="glyphicon glyphicon-plus"></span>
             <div class="cart d-none" id = "popover-content">
                 <h4 style = "color: grey; font-size: 20px;">Cart</h4>
                 <h5 style="padding-bottom: 10px;">Total: ${{total}}, Items: {{size}}</h5>
                 <ol style="padding: 0; list-style: none;">
                     <li style="text-align: center;" v-for = "item in cart">{{item.item.name}} Q: {{item.quantity}}
-                        <a href="#" v-on:click = "removeFromCart(item)">Delete</a> 
-                       
+                        <a style="margin-right: 7px;" href="#" v-on:click = "removeFromCart(item)"><i class="fas fa-trash"></i></a> 
+                        <a style="margin-right: 7px;" href="#" v-on:click = "increment(item)"> <i class="fas fa-plus"></i></a>
+                        <a href="#"> <i class="fas fa-minus" v-on:click = "decrement(item)"></i></a>
                     </li> 
                 </ol>
             </div>
         </div>
         <div class="container">
             <div class="row">
-                 <a href="#"><span class="glyphicon glyphicon-plus"></span></a>
                 <div class="col-md-4 text-center">
                     <h5 style="text-align: center;" style= "margin-bottom: 25px;"> Star Wars Episode IV DVD ($20)</h5>
                     <img class="movie img-thumbnail center-block" src = "img/eps-4.jpg">

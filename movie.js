@@ -38,6 +38,22 @@ var app = new Vue({
             app.cart = filtered;
             app.size -= movie.quantity;
             app.total -= (movie.item.price * movie.quantity); 
+        },
+        
+        increment: function(movie) {
+            movie.quantity += 1;
+            app.size += 1;
+            app.total += movie.item.price;
+        },
+        
+        decrement: function(movie) {
+            if (movie.quantity === 1) {
+                app.removeFromCart(movie);
+            } else {
+                movie.quantity -= 1;
+                app.size -= 1;
+                app.total -= movie.item.price;
+            }
         }
         
     }
