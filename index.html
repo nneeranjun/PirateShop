@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+
+     
+    <title>Pirate Shop</title>
+  </head>
+  <body>
+    <div id="app">
+        <nav class="navbar fixed-top navbar-light bg-light justify-content-between">
+          <a class="navbar-brand">Pirate Shop</a>
+          <button type="button" class="btn btn-secondary float-right" data-container="body" data-toggle="popover" data-placement="bottom" data-html = "true" id = "cart"> Cart {{size}} </button>
+        </nav>
+        <div style = "margin-top: 50px;" id= "header" class = "container-fluid text-center">
+            <h1 style="padding-top: 50px; padding-bottom: 50px;">Welcome to the pirate shop!</h1>
+            <div class="cart d-none" id = "popover-content">
+                <h4 style = "color: grey; font-size: 20px;">Cart</h4>
+                <h5 style="padding-bottom: 10px;">Total: ${{total}}, Items: {{size}}</h5>
+                <ol style="padding: 0; list-style: none;">
+                    <li style="text-align: center;" v-for = "item in cart">{{item.item.name}} Q: {{item.quantity}}
+                        <a href="#" v-on:click = "removeFromCart(item)">Delete</a> 
+                       
+                    </li> 
+                </ol>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                 <a href="#"><span class="glyphicon glyphicon-plus"></span></a>
+                <div class="col-md-4 text-center">
+                    <h5 style="text-align: center;" style= "margin-bottom: 25px;"> Star Wars Episode IV DVD ($20)</h5>
+                    <img class="movie img-thumbnail center-block" src = "img/eps-4.jpg">
+                    <button v-on:click = "addToCart(0)" class="btn btn-outline-info cart-btn">Add To Cart</button>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h5 style="text-align: center;" style= "margin-bottom: 25px;"> Star Wars Episode V DVD ($20)</h5>
+                    <img class="movie img-thumbnail center-block" src = "img/eps-5.jpg">
+                    <button v-on:click = "addToCart(1)" class="btn btn-outline-info cart-btn">Add To Cart</button>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h5 style="text-align: center;" style= "margin-bottom: 25px;"> Star Wars Episode VI DVD ($20)</h5>
+                    <img class="movie img-thumbnail center-block" src = "img/eps-6.jpg">
+                    <button v-on:click = "addToCart(2)" class="btn btn-outline-info cart-btn">Add To Cart</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <h5 style="text-align: center;" style= "margin-bottom: 25px;"> Star Wars Episode IV Blue-Ray ($25)</h5>
+                    <img class="movie img-thumbnail center-block" src = "img/eps-4.jpg">
+                    <button v-on:click = "addToCart(3)" class="btn btn-outline-info cart-btn">Add To Cart</button>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h5 style="text-align: center;" style= "margin-bottom: 25px;"> Star Wars Episode V Blue-Ray ($25)</h5>
+                    <img class="movie img-thumbnail center-block" src = "img/eps-5.jpg">
+                    <button v-on:click = "addToCart(4)" class="btn btn-outline-info cart-btn">Add To Cart</button>
+                </div>
+                <div class="col-md-4 text-center">
+                    <h5 style="text-align: center;" style= "margin-bottom: 25px;"> Star Wars Episode VI Blue-Ray ($25)</h5>
+                    <img class="movie img-thumbnail center-block" src = "img/eps-6.jpg">
+                    <button v-on:click = "addToCart(5)" class="btn btn-outline-info cart-btn">Add To Cart</button>
+                </div>
+            </div>
+        </div>
+</div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+       
+       <script src="movie.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>

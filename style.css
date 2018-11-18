@@ -1,0 +1,24 @@
+#header {
+    background-color: pink;
+    margin-bottom: 35px;
+}
+.cart {
+    margin-bottom: 35px;
+}
+.movie {
+    height: 200px;
+    width:200px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 25px;
+    border-radius: 50%;
+}
+
+.cart-btn {
+    margin-bottom: 50px;
+}
+
+#cart {
+    padding: none;
+}
