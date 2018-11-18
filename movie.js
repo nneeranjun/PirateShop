@@ -13,7 +13,9 @@ var app = new Vue({
             
         ],
         size: 0,
-        total: 0
+        total: 0,
+        allDiscount: false,
+        bulkDiscount: false
     },
     methods: {
         addToCart: function(index) {
@@ -25,10 +27,19 @@ var app = new Vue({
                 app.cart.push({item: movie, quantity: 1});
             } else {
                 item.quantity += 1;
-                console.log(item.quantity);
             } 
             app.size += 1;
             app.total += movie.price;
+            if (app.size >= 3 && !app.allDiscount) {
+                var filtered = app.cart.filter(function(value){
+                    return value.item.blueray ==  false;
+                });
+                console.log(filtered);
+                if (filtered.length == 3) {
+                    app.total -= 6;
+                    app.allDiscount = true;
+                }
+            }
         },
         
         removeFromCart: function(movie) {
@@ -38,6 +49,15 @@ var app = new Vue({
             app.cart = filtered;
             app.size -= movie.quantity;
             app.total -= (movie.item.price * movie.quantity); 
+            if (app.allDiscount) {
+                var filtered = app.cart.filter(function(value){
+                    return value.item.blueray ==  false;
+                });
+                if (filtered.length <= 3) {
+                    app.total += 6;
+                    app.allDiscount = false;
+                }
+            }
         },
         
         increment: function(movie) {
