@@ -34,7 +34,8 @@
             <span class="glyphicon glyphicon-plus"></span>
             <div class="cart d-none" id = "popover-content">
                 <h4 style = "color: grey; font-size: 20px;">Cart</h4>
-                <h5 style="padding-bottom: 10px;">Total: ${{app.finalCost()}}, Items: {{size}}</h5>
+                <h5 v-if = "!bulkDiscount" style="padding-bottom: 10px;">Total: ${{round(total - totalDiscount)}}, Items: {{size}}</h5>
+                <h5 v-else style="padding-bottom: 10px;">Total: ${{round((total - totalDiscount)*0.95)}}, Items: {{size}}</h5>
                 <ol style="padding: 0; list-style: none;">
                     <li style="text-align: center;" v-for = "item in cart">{{item.item.name}} Q: {{item.quantity}}
                         <a style="margin-right: 7px;" href="#" v-on:click = "removeFromCart(item)"><i class="fas fa-trash"></i></a> 
