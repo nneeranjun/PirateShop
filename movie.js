@@ -1,28 +1,43 @@
 var app = new Vue({
     el: '#app',
     data: {
+        //temporary "database" to store different kinds of movies
         items: [
             {id: 0, name: 'Star Wars Episode IV DVD ($20)', blueray: false, price: 20 },
             {id: 1, name: 'Star Wars Episode V DVD ($20)', blueray: false, price: 20 },
             {id: 2, name: 'Star Wars Episode VI DVD ($20)', blueray: false, price: 20 },
-            {id: 3, name: 'Star Wars Episode IV DVD ($25)', blueray: true, price: 25 },
-            {id: 4, name: 'Star Wars Episode V DVD ($25)', blueray: true, price: 25 },
-            {id: 5, name: 'Star Wars Episode VI DVD ($25)', blueray: true, price: 25 }
+            {id: 3, name: 'Star Wars Episode IV Blueray ($25)', blueray: true, price: 25 },
+            {id: 4, name: 'Star Wars Episode V Blueray ($25)', blueray: true, price: 25 },
+            {id: 5, name: 'Star Wars Episode VI Blueray ($25)', blueray: true, price: 25 }
         ],
+        //initialization of empty cart
         cart: [
             
         ],
+        //# of items in cart
         size: 0,
+        //total cost of items before discounts are applied
         total: 0,
-        allDiscount: false,
-        bulkDiscount: false
+        // boolean to represent if user has activated the blue ray discount (all 3 blue-rays in cart)
+        bluerayDiscount: false,
+        // boolean to represent if user has activated the dvd discount (all 3 dvd's in cart)
+        dvdDiscount: false,
+        // boolean to represent if user has activated the bulk discount (100 or more items in cart)
+        bulkDiscount: false,
+        //running total of discounts collected by user
+        totalDiscount: 0
     },
     methods: {
+        /*
+        Adds movie to cart based on index clicked by user 
+        */
         addToCart: function(index) {
             var movie = app.items[index];
+            //finds cart item matching movie
             var item = app.cart.find(obj => {
                 return obj.item.id === movie.id
             });
+            //adds movie to cart if not present already, else increases quantity
             if (jQuery.isEmptyObject(item)) {
                 app.cart.push({item: movie, quantity: 1});
             } else {
@@ -30,18 +45,34 @@ var app = new Vue({
             } 
             app.size += 1;
             app.total += movie.price;
-            if (app.size >= 3 && !app.allDiscount) {
+            if (app.size >= 3 && !app.dvdDiscount) {
                 var filtered = app.cart.filter(function(value){
                     return value.item.blueray ==  false;
                 });
-                console.log(filtered);
                 if (filtered.length == 3) {
-                    app.total -= 6;
-                    app.allDiscount = true;
+                    //app.total -= 6;
+                    app.totalDiscount += 6;
+                    app.dvdDiscount = true;
                 }
             }
+            if (app.size >= 3 && !app.bluerayDiscount) {
+                var filtered = app.cart.filter(function(value){
+                    return value.item.blueray ==  true;
+                });
+                console.log(filtered);
+                if (filtered.length == 3) {
+                    //app.total -= 11.25;
+                    app.totalDiscount += 11.25;
+                    app.bluerayDiscount = true;
+                }
+            }
+            if (app.size >= 100 && !app.bulkDiscount) {
+                app.bulkDiscount = true;
+            }
         },
-        
+        /*
+        Removes movie from cart entirely
+        */
         removeFromCart: function(movie) {
             var filtered = app.cart.filter(function(value){
                 return value.item.id !=  movie.item.id;
@@ -49,23 +80,46 @@ var app = new Vue({
             app.cart = filtered;
             app.size -= movie.quantity;
             app.total -= (movie.item.price * movie.quantity); 
-            if (app.allDiscount) {
+            if (app.dvdDiscount) {
                 var filtered = app.cart.filter(function(value){
                     return value.item.blueray ==  false;
                 });
                 if (filtered.length <= 3) {
-                    app.total += 6;
-                    app.allDiscount = false;
+                    //app.total += 6;
+                    app.totalDiscount -= 6;
+                    app.dvdDiscount = false;
                 }
             }
+            if (app.bluerayDiscount) {
+                var filtered = app.cart.filter(function(value){
+                    return value.item.blueray ==  true;
+                });
+                if (filtered.length <= 3) {
+                    //app.total += 11.25;
+                    app.totalDiscount -= 11.25;
+                    app.bluerayDiscount = false;
+                }
+            }
+            
+            if (app.size < 100 && app.bulkDiscount) {
+                app.bulkDiscount = false;
+            }
+            
         },
-        
+        /*
+        Increments movie quantity by 1
+        */
         increment: function(movie) {
             movie.quantity += 1;
             app.size += 1;
             app.total += movie.item.price;
+            if (app.size >= 100 && !app.bulkDiscount) {
+                app.bulkDiscount = true;
+            }
         },
-        
+        /*
+        Decrements movie quantity by 1
+        */
         decrement: function(movie) {
             if (movie.quantity === 1) {
                 app.removeFromCart(movie);
@@ -74,12 +128,19 @@ var app = new Vue({
                 app.size -= 1;
                 app.total -= movie.item.price;
             }
+            if (app.size < 100 && app.bulkDiscount) {
+                app.bulkDiscount = false;
+            }
+        },
+        round: function(amount) {
+            return Math.round(amount * 100) / 100;
         }
         
     }
 });
 
 $(document).ready(function() {
+    //cart popover content 
     $('#cart').popover({
         content: $('#popover-content')
     }).on('show.bs.popover', function() {

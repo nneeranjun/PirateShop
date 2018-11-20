@@ -25,10 +25,17 @@
         </nav>
         <div style = "margin-top: 50px;" id= "header" class = "container-fluid text-center">
             <h1 style="padding-top: 50px; padding-bottom: 50px;">Welcome to the pirate shop!</h1>
+            <h5>Deals</h5>
+            <ul id="deals">
+                <li>Buy all three DVD's and get a 10% discount on those items</li>
+                <li>Buy all three Blueray's and get a 15% discount on those items</li>
+                <li>Buy 100 or more items and get a 5% discount on your entire order</li>
+            </ul>
             <span class="glyphicon glyphicon-plus"></span>
             <div class="cart d-none" id = "popover-content">
                 <h4 style = "color: grey; font-size: 20px;">Cart</h4>
-                <h5 style="padding-bottom: 10px;">Total: ${{total}}, Items: {{size}}</h5>
+                <h5 v-if = "!bulkDiscount" style="padding-bottom: 10px;">Total: ${{round(total - totalDiscount)}}, Items: {{size}}</h5>
+                <h5 v-if = "bulkDiscount" style="padding-bottom: 10px;">Total: ${{round((total - totalDiscount)*0.95)}}, Items: {{size}}</h5>
                 <ol style="padding: 0; list-style: none;">
                     <li style="text-align: center;" v-for = "item in cart">{{item.item.name}} Q: {{item.quantity}}
                         <a style="margin-right: 7px;" href="#" v-on:click = "removeFromCart(item)"><i class="fas fa-trash"></i></a> 
@@ -36,6 +43,8 @@
                         <a href="#"> <i class="fas fa-minus" v-on:click = "decrement(item)"></i></a>
                     </li> 
                 </ol>
+                <h6 v-if= "!bulkDiscount">Total Savings: ${{round(totalDiscount)}}</h6>
+                <h6 v-else>Total Savings: ${{round(totalDiscount + ((total - totalDiscount) *0.05))}}</h6>
             </div>
         </div>
         <div class="container">

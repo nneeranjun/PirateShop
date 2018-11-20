@@ -22,3 +22,8 @@
 #cart {
     padding: none;
 }
+#deals {
+    padding: 0px;
+    list-style-type: none;
+    padding-bottom: 35px;
+}
