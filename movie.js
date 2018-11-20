@@ -43,29 +43,31 @@ var app = new Vue({
             } else {
                 item.quantity += 1;
             } 
-            app.size += 1;
-            app.total += movie.price;
+            app.size += 1; //increment size of cart
+            app.total += movie.price; //add cost of movie to total
+            
+            //checking to see if the user is able to apply dvd discount
             if (app.size >= 3 && !app.dvdDiscount) {
                 var filtered = app.cart.filter(function(value){
                     return value.item.blueray ==  false;
                 });
                 if (filtered.length == 3) {
-                    //app.total -= 6;
-                    app.totalDiscount += 6;
+                    app.totalDiscount += 6; 
                     app.dvdDiscount = true;
                 }
             }
+            //checking to see if user is able to apply blueray discount
             if (app.size >= 3 && !app.bluerayDiscount) {
                 var filtered = app.cart.filter(function(value){
                     return value.item.blueray ==  true;
                 });
                 console.log(filtered);
                 if (filtered.length == 3) {
-                    //app.total -= 11.25;
                     app.totalDiscount += 11.25;
                     app.bluerayDiscount = true;
                 }
             }
+            //checking to see if user is able to apply bulk discount
             if (app.size >= 100 && !app.bulkDiscount) {
                 app.bulkDiscount = true;
             }
@@ -80,6 +82,7 @@ var app = new Vue({
             app.cart = filtered;
             app.size -= movie.quantity;
             app.total -= (movie.item.price * movie.quantity); 
+            //checking to see if removing this item causes the user to lose the dvd discount
             if (app.dvdDiscount) {
                 var filtered = app.cart.filter(function(value){
                     return value.item.blueray ==  false;
@@ -90,6 +93,7 @@ var app = new Vue({
                     app.dvdDiscount = false;
                 }
             }
+            //checking to see if removing this item causes the user to lose the blueray discount
             if (app.bluerayDiscount) {
                 var filtered = app.cart.filter(function(value){
                     return value.item.blueray ==  true;
@@ -100,7 +104,7 @@ var app = new Vue({
                     app.bluerayDiscount = false;
                 }
             }
-            
+            //checking to see if removing this item causes the user to lose the bulk discount
             if (app.size < 100 && app.bulkDiscount) {
                 app.bulkDiscount = false;
             }
@@ -113,6 +117,7 @@ var app = new Vue({
             movie.quantity += 1;
             app.size += 1;
             app.total += movie.item.price;
+            //checking to see if increasing this item allows user to apply bulk discount
             if (app.size >= 100 && !app.bulkDiscount) {
                 app.bulkDiscount = true;
             }
@@ -128,10 +133,12 @@ var app = new Vue({
                 app.size -= 1;
                 app.total -= movie.item.price;
             }
+            //checking to see if removing this item causes the user to lose the bulk discount
             if (app.size < 100 && app.bulkDiscount) {
                 app.bulkDiscount = false;
             }
         },
+        //function for formatting decimal values
         round: function(amount) {
             return Math.round(amount * 100) / 100;
         }
